@@ -1,9 +1,9 @@
-name: MRC Events Importer
-description: Migrate importer for stanford events.
+name: 'H&S Events Importer'
+description: 'Migrate importer for stanford events.'
 core: 8.x
 type: module
 version: 8.x
-package: Stanford MRC
+package: 'Humanities & Sciences'
 dependencies:
   - hs_events
   - migrate_tools

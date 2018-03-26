@@ -1,7 +1,7 @@
 (function ($, window, Drupal) {
   'use strict';
 
-  Drupal.behaviors.mrcEventsAdmin = {
+  Drupal.behaviors.hsEventsAdmin = {
     attach: function attach() {
       $('input.show-end-date[type="checkbox"]').each(function () {
         var parent = $(this).closest('.field--type-daterange');

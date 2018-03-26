@@ -22,7 +22,6 @@ dependencies:
   - link
   - media
   - menu_ui
-  - mrc_ds_blocks
   - node
   - path
   - stanford_media

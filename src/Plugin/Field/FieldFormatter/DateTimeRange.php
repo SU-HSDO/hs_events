@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mrc_events\Plugin\Field\FieldFormatter;
+namespace Drupal\hs_events\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
