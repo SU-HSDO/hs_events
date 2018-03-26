@@ -9,8 +9,22 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Entity\Node;
 
-function hs_events_test(){
-
+function hs_events_test() {
+  $path = 'modules/stanford/hs_events/config/install';
+  $dependencies = [];
+  foreach (scandir($path) as $file_name) {
+    if (strpos($file_name, '.yml') !== FALSE) {
+      $decoded = \Drupal\Core\Serialization\Yaml::decode(file_get_contents("$path/$file_name"));
+      if (empty($decoded['dependencies']['module'])) {
+        continue;
+      }
+      foreach ($decoded['dependencies']['module'] as $module_name) {
+        $dependencies[$module_name] = $module_name;
+      }
+    }
+  }
+  ksort($dependencies);
+  dpm($dependencies);
 }
 
 /**

@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.node.stanford_event.body
-    - field.field.node.stanford_event.field_mrc_event_series
     - field.field.node.stanford_event.field_mrc_image
     - field.field.node.stanford_event.field_mrc_video
     - field.field.node.stanford_event.field_s_event_admission
@@ -222,7 +221,6 @@ content:
     type: basic_string
     region: sponsor
 hidden:
-  field_mrc_event_series: true
   field_s_event_audience: true
   field_s_event_category: true
   field_s_event_featured: true

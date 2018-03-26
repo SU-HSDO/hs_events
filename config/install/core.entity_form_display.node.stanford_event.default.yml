@@ -4,7 +4,6 @@ dependencies:
   config:
     - entity_browser.browser.video_browser
     - field.field.node.stanford_event.body
-    - field.field.node.stanford_event.field_mrc_event_series
     - field.field.node.stanford_event.field_mrc_image
     - field.field.node.stanford_event.field_mrc_video
     - field.field.node.stanford_event.field_s_event_admission
@@ -28,7 +27,6 @@ dependencies:
     - entity_browser_entity_form
     - field_group
     - inline_entity_form
-    - mrc_helper
     - path
     - telephone
     - text
@@ -56,8 +54,6 @@ third_party_settings:
         - field_s_event_link
         - field_s_event_speaker
         - field_s_event_featured
-        - field_s_event_type
-        - field_mrc_event_series
       parent_name: group_event_tabs
       weight: 2
       format_type: tab
@@ -120,12 +116,6 @@ content:
   created:
     type: datetime_timestamp
     weight: 5
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_mrc_event_series:
-    type: options_select
-    weight: 25
     region: content
     settings: {  }
     third_party_settings: {  }

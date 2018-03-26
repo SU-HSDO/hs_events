@@ -1,20 +1,36 @@
-name: MRC Events
-description: Events content type and importer
+name: 'Events'
+description: 'Events content type and importer'
 core: 8.x
 type: module
 version: 8.x
-package: Stanford MRC
+package: 'Humanities And Sciences'
 dependencies:
-  - telephone
-  - file
-  - image
-  - link
-  - node
-  - taxonomy
-  - text
-  - pathauto
-  - datetime_range
   - allowed_formats
-  - ui_patterns_ds
-  - stanford_media
+  - bricks
+  - ctools
+  - datetime
+  - datetime_range
+  - ds
+  - eck
+  - entity_browser
+  - entity_browser_entity_form
+  - entity_usage
   - field_group
+  - field_permissions
+  - focal_point
+  - inline_entity_form
+  - link
+  - media
+  - menu_ui
+  - mrc_ds_blocks
+  - node
+  - path
+  - stanford_media
+  - system
+  - taxonomy
+  - telephone
+  - text
+  - ui_patterns_views
+  - user
+  - video_embed_field
+  - views_taxonomy_term_name_depth
