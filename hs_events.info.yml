@@ -1,10 +1,20 @@
-name: 'H&S Events'
-type: module
-description: 'Does some stuff'
+name: MRC Events
+description: Events content type and importer
 core: 8.x
-package: Stanford
-version: 8.x-1.0-dev
+type: module
+version: 8.x
+package: Stanford MRC
 dependencies:
-  - layout_plugin
-# libraries:
-#   - /example_name
+  - telephone
+  - file
+  - image
+  - link
+  - node
+  - taxonomy
+  - text
+  - pathauto
+  - datetime_range
+  - allowed_formats
+  - ui_patterns_ds
+  - stanford_media
+  - field_group
