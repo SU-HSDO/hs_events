@@ -30,7 +30,9 @@ function hs_events_entity_delete(EntityInterface $entity) {
  * Implements hook_field_widget_form_alter().
  */
 function hs_events_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
-  if ($element['#entity_type'] == 'node' && $element['#bundle'] == 'stanford_event') {
+  $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+
+  if ($entity instanceof Node && $entity->bundle() == 'stanford_event') {
     /** @var \Drupal\Core\Field\WidgetBaseInterface $widget */
     $widget = $context['widget'];
     if ($widget->getBaseId() == 'daterange_datelist') {

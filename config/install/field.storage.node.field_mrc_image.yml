@@ -2,18 +2,17 @@ langcode: en
 status: true
 dependencies:
   module:
-    - bricks
-    - eck
+    - media
     - node
-id: node.field_s_event_speaker
-field_name: field_s_event_speaker
+id: node.field_mrc_image
+field_name: field_mrc_image
 entity_type: node
-type: bricks
+type: entity_reference
 settings:
-  target_type: event_collections
-module: bricks
+  target_type: media
+module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
