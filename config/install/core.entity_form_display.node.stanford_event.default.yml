@@ -4,15 +4,14 @@ dependencies:
   config:
     - entity_browser.browser.video_browser
     - field.field.node.stanford_event.body
-    - field.field.node.stanford_event.field_mrc_image
-    - field.field.node.stanford_event.field_mrc_video
+    - field.field.node.stanford_event.field_s_event_image
+    - field.field.node.stanford_event.field_s_event_video
     - field.field.node.stanford_event.field_s_event_admission
     - field.field.node.stanford_event.field_s_event_audience
     - field.field.node.stanford_event.field_s_event_category
     - field.field.node.stanford_event.field_s_event_contact_email
     - field.field.node.stanford_event.field_s_event_contact_phone
     - field.field.node.stanford_event.field_s_event_date
-    - field.field.node.stanford_event.field_s_event_featured
     - field.field.node.stanford_event.field_s_event_link
     - field.field.node.stanford_event.field_s_event_location
     - field.field.node.stanford_event.field_s_event_map_link
@@ -50,10 +49,9 @@ third_party_settings:
         - title
         - field_s_event_date
         - body
-        - field_mrc_image
+        - field_s_event_image
         - field_s_event_link
         - field_s_event_speaker
-        - field_s_event_featured
       parent_name: group_event_tabs
       weight: 2
       format_type: tab
@@ -86,7 +84,7 @@ third_party_settings:
       label: 'Supplement Info'
     group_post_event_details:
       children:
-        - field_mrc_video
+        - field_s_event_video
       parent_name: group_event_tabs
       weight: 6
       format_type: tab
@@ -119,7 +117,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_mrc_image:
+  field_s_event_image:
     type: entity_browser_entity_reference
     weight: 20
     region: content
@@ -134,7 +132,7 @@ content:
         view_mode: thumbnail
       field_widget_edit: true
       field_widget_replace: false
-  field_mrc_video:
+  field_s_event_video:
     type: entity_browser_entity_reference
     weight: 24
     region: content
@@ -197,13 +195,6 @@ content:
       increment: 15
     third_party_settings: {  }
     type: daterange_datelist
-    region: content
-  field_s_event_featured:
-    weight: 23
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
     region: content
   field_s_event_link:
     type: link_default

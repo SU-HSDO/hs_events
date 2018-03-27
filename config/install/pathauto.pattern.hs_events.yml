@@ -3,8 +3,6 @@ status: true
 dependencies:
   module:
     - node
-_core:
-  default_config_hash: l0a3eQ9eZzK9t0lWBrGg60Ynt2H-0Wn5YCRM-s6UbAc
 id: hs_events
 label: 'Events Content'
 type: 'canonical_entities:node'

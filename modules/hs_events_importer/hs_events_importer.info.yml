@@ -1,4 +1,4 @@
-name: 'H&S Events Importer'
+name: 'Events Importer'
 description: 'Migrate importer for stanford events.'
 core: 8.x
 type: module

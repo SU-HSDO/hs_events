@@ -4,8 +4,8 @@ dependencies:
   module:
     - media
     - node
-id: node.field_mrc_image
-field_name: field_mrc_image
+id: node.field_s_event_image
+field_name: field_s_event_image
 entity_type: node
 type: entity_reference
 settings:

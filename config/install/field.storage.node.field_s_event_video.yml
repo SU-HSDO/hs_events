@@ -4,8 +4,8 @@ dependencies:
   module:
     - media
     - node
-id: node.field_mrc_video
-field_name: field_mrc_video
+id: node.field_s_event_video
+field_name: field_s_event_video
 entity_type: node
 type: entity_reference
 settings:
