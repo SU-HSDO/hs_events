@@ -18,7 +18,14 @@ class HsEventsTest extends BrowserTestBase {
    *
    * @var array
    */
-  protected static $modules = ['hs_events', 'toolbar', 'block'];
+  protected static $modules = ['block', 'hs_events', 'field_ui'];
+
+  /**
+   * Disable strict config testing since entity_browser throws issues.
+   *
+   * @var bool
+   */
+  protected $strictConfigSchema = FALSE;
 
   /**
    * {@inheritdoc}
@@ -35,7 +42,18 @@ class HsEventsTest extends BrowserTestBase {
    * Validates the module.
    */
   public function testHsEvents() {
+    $this->drupalGet('node/add');
+    $this->assertSession()->statusCodeEquals(403);
 
+    $account = $this->drupalCreateUser([
+      'administer nodes',
+      'administer content types',
+      'bypass node access',
+    ]);
+    $this->drupalLogin($account);
+
+    $this->drupalGet('node/add/stanford_event');
+    $this->assertSession()->statusCodeEquals(404);
   }
 
 }
