@@ -21,3 +21,4 @@ dependencies:
   - telephone
   - text
   - user
+  - menu_ui

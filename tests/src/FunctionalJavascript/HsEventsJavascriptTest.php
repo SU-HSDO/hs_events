@@ -1,17 +1,10 @@
 <?php
 
-namespace Drupal\Tests\hs_events\Functional;
+namespace Drupal\Tests\hs_events\FunctionalJavascript;
 
-use Drupal\Tests\BrowserTestBase;
+use Drupal\FunctionalJavascriptTests\JavascriptTestBase;
 
-/**
- * Class HsEventsTest.
- *
- * @package Drupal\Tests\hs_events\Functional
- *
- * @group hs_events
- */
-class HsEventsTest extends BrowserTestBase {
+class HsEventsJavascriptTest extends JavascriptTestBase {
 
   /**
    * Modules to install.
@@ -78,12 +71,12 @@ class HsEventsTest extends BrowserTestBase {
       'body[0][value]' => 'Body Value',
       'field_s_event_link[0][uri]' => 'http://google.com',
       'field_s_event_link[0][title]' => 'Google',
-      'field_s_event_type' => NULL,
-      'field_s_event_audience[0][target_id]' => 'General Public',
+      //      'field_s_event_type' => NULL,
+      //      'field_s_event_audience[0][target_id]' => 'General Public',
       'field_s_event_location[0][value]' => 'The White House',
       'field_s_event_map_link[0][uri]' => 'http://maps.google.com',
       'field_s_event_map_link[0][title]' => 'Google Maps',
-      'field_s_event_category[0][target_id]' => 'Test Category',
+      //      'field_s_event_category[0][target_id]' => 'Test Category',
       'field_s_event_sponsor[0][value]' => 'Stanford University',
       'field_s_event_contact_email[0][value]' => 'test@test.com',
       'field_s_event_contact_phone[0][value]' => '123-456-7890',
@@ -96,11 +89,12 @@ class HsEventsTest extends BrowserTestBase {
         $this->getSession()->getPage()->fillField($name, $value);
       }
     }
-
+    file_put_contents('/var/www/mrc/blt/docroot/sites/simpletest/screenshot/shot.jpg', $this->getSession()
+      ->getScreenshot());
     $this->getSession()->getPage()->pressButton('Save');
+
 
     // Valdates the path auto works.
     $assert_session->addressEquals('/events/test-event');
   }
-
 }
