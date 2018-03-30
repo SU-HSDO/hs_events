@@ -21,10 +21,13 @@ dependencies:
     - node.type.stanford_event
   module:
     - bricks
+    - hs_events
     - link
     - stanford_media
     - text
     - user
+_core:
+  default_config_hash: I-lvMrEteIxDa1VXJqfEBaL2MYDvA4P7-t6YTZxmVmc
 id: node.stanford_event.default
 targetEntityType: node
 bundle: stanford_event
@@ -91,7 +94,7 @@ content:
     region: content
     label: hidden
     settings:
-      view_mode: default
+      view_mode: full
       link: false
     third_party_settings: {  }
   links:
