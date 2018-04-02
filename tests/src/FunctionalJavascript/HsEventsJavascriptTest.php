@@ -11,7 +11,7 @@ class HsEventsJavascriptTest extends JavascriptTestBase {
    *
    * @var array
    */
-  protected static $modules = ['block', 'hs_events', 'field_ui'];
+  protected static $modules = ['block', 'hs_events'];
 
   /**
    * Disable strict config testing since entity_browser throws issues.
@@ -46,17 +46,12 @@ class HsEventsJavascriptTest extends JavascriptTestBase {
       'region' => 'content',
       'weight' => -50,
     ]);
-
-    $this->testfileData = file_get_contents(__DIR__ . '/avatar.png');
-    $this->tmpFile = tempnam($this->filesDir, $this->testfilePrefix);
-    $this->tmpFile = tempnam('', $this->testfilePrefix);
-    file_put_contents($this->tmpFile, $this->testfileData);
   }
 
   /**
    * Log in with appropriate permissions.
    */
-  protected function logIn() {
+  public function testNodeAccess() {
     $assert_session = $this->assertSession();
     $this->drupalGet('node/add/stanford_event');
     $assert_session->statusCodeEquals(403);
@@ -76,22 +71,25 @@ class HsEventsJavascriptTest extends JavascriptTestBase {
       'bypass eck entity access',
     ]);
     $this->drupalLogin($account);
-  }
-
-  /**
-   * Validates the module.
-   */
-  public function testHsEvents() {
-    $this->logIn();
-    $test_image = $this->createImageMedia();
-    $this->createVideoMedia();
-    /** @var \Drupal\Tests\WebAssert $assert_session */
-    $assert_session = $this->assertSession();
-    $page = $this->getSession()->getPage();
 
     $this->drupalGet('node/add/stanford_event');
     $assert_session->statusCodeEquals(200);
     $assert_session->pageTextContains('Create Event');
+  }
+
+  /**
+   * Tests the content type.
+   */
+  public function testHsEvents() {
+    $this->testNodeAccess();
+    $test_image = $this->createImageMedia();
+    $this->createVideoMedia();
+
+    $assert_session = $this->assertSession();
+    $page = $this->getSession()->getPage();
+
+    $this->drupalGet('node/add/stanford_event');
+
     $page->checkField('Show End Date');
 
     $field_tabs = [
@@ -151,63 +149,55 @@ class HsEventsJavascriptTest extends JavascriptTestBase {
                 $page->selectFieldOption($name, $value);
                 break;
               default:
-                $this->getSession()->getPage()->fillField($name, $value);
+                $page->fillField($name, $value);
                 break;
             }
           }
         }
       }
     }
-    $this->createScreenshot('/var/www/mrc/blt/docroot/sites/simpletest/screenshot/shot' . __LINE__ . '.jpg');
+
+    // EVENT DETAILS.
     $page->clickLink('Event Details');
-    $page->find('css', '.field--name-field-s-event-image summary')
-      ->click();
+    $page->find('css', '.field--name-field-s-event-image summary')->click();
     $this->getSession()->switchToIFrame('entity_browser_iframe_image_browser');
 
-    $this->assertSession()
-      ->waitForId('views-exposed-form-media-entity-browser-image-browser');
-    $this->assertSession()->pageTextContains('Image Browser');
-    $this->assertSession()->fieldExists('name');
-    $this->getSession()->getPage()->findLink('Embed a File')->click();
-    $this->assertSession()->waitForField('upload[uploaded_files]');
-    $this->assertSession()->pageTextContains('Select Files');
-    $this->getSession()->getPage()->findLink('Media Library')->click();
-    $this->assertSession()->waitForField('Name');
+    $assert_session->waitForId('views-exposed-form-media-entity-browser-image-browser');
+    $assert_session->pageTextContains('Image Browser');
+    $assert_session->fieldExists('name');
+    $page->findLink('Embed a File')->click();
+    $assert_session->waitForField('upload[uploaded_files]');
+    $assert_session->pageTextContains('Select Files');
+    $page->findLink('Media Library')->click();
+    $assert_session->waitForField('Name');
 
-    $this->getSession()
-      ->getPage()
-      ->find('css', 'img[src*="/' . $test_image . '"]')
+    $page->find('css', 'img[src*="/' . $test_image . '"]')->click();
+
+    $assert_session->waitForElementVisible('css', 'input[name="use_selected"]')
       ->click();
 
-    $this->assertSession()
-      ->waitForElementVisible('css', 'input[name="use_selected"]')->click();
-
     $this->getSession()->switchToIFrame();
-    $this->assertSession()
-      ->waitForElementVisible('css', '.field--name-field-s-event-image input[name="remove"]');
+    $assert_session->waitForElementVisible('css', '.field--name-field-s-event-image input[name="remove"]');
 
     $page->pressButton('Add new Speaker');
-    $this->assertSession()
-      ->waitForField('field_s_event_speaker[form][inline_entity_form][title][0][value]');
+    $assert_session->waitForField('field_s_event_speaker[form][inline_entity_form][title][0][value]');
     $page->fillField('field_s_event_speaker[form][inline_entity_form][title][0][value]', $this->randomString());
 
-    $this->getSession()->getPage()->clickLink('Post Event Details');
+    $page->clickLink('Post Event Details');
 
     // Switch into video browser.
     $this->getSession()->switchToIFrame('entity_browser_iframe_video_browser');
-    $this->getSession()->getPage()->checkField('Select this item');
-    $this->getSession()->getPage()->pressButton('Continue');
-    $this->assertSession()
-      ->waitForElementVisible('css', 'input[name="use_selected"]')->click();
+    $page->checkField('Select this item');
+    $page->pressButton('Continue');
+    $assert_session->waitForElementVisible('css', 'input[name="use_selected"]')
+      ->click();
 
     $this->getSession()->switchToIFrame();
-    $this->assertSession()
-      ->waitForElement('css', '.field--name-field-s-event-video input[name="remove"]');
+    $assert_session->waitForElement('css', '.field--name-field-s-event-video input[name="remove"]');
 
-    $this->getSession()->getPage()->pressButton('Save');
+    $page->pressButton('Save');
     // Valdates the path auto works.
     $assert_session->addressEquals('/events/test-event');
-    $this->createScreenshot('/var/www/mrc/blt/docroot/sites/simpletest/screenshot/shot' . __LINE__ . '.jpg');
   }
 
   /**
@@ -231,7 +221,8 @@ class HsEventsJavascriptTest extends JavascriptTestBase {
     $result = $this->assertSession()->waitForButton('Remove');
     $this->assertNotEmpty($result);
     $this->getSession()->getPage()->pressButton('Save');
-
+    $this->assertSession()
+      ->pageTextContains("Image $test_filename has been created");
     return $test_filename;
   }
 
@@ -251,6 +242,7 @@ class HsEventsJavascriptTest extends JavascriptTestBase {
       ->getPage()
       ->fillField("{$source_field_id}[0][value]", $video_url);
     $this->getSession()->getPage()->pressButton('Save');
+    $this->assertSession()->pageTextContains("video $name has been created");
     return $name;
   }
 

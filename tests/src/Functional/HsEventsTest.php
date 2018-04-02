@@ -18,7 +18,7 @@ class HsEventsTest extends BrowserTestBase {
    *
    * @var array
    */
-  protected static $modules = ['block', 'hs_events', 'field_ui'];
+  protected static $modules = ['block', 'hs_events'];
 
   /**
    * Disable strict config testing since entity_browser throws issues.
@@ -34,25 +34,47 @@ class HsEventsTest extends BrowserTestBase {
     parent::setUp();
 
     $this->container->get('theme_installer')->install(['bartik', 'seven']);
-    $this->drupalPlaceBlock('local_tasks_block');
-    $this->drupalPlaceBlock('page_title_block');
+
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    $config = $config_factory->getEditable('system.theme');
+    $config->set('admin', 'seven');
+    $config->set('default', 'bartik');
+    $config->save();
+    $config = $config_factory->getEditable('node.settings');
+    $config->set('use_admin_theme', TRUE);
+    $config->save();
+
+    $this->drupalPlaceBlock('local_tasks_block', [
+      'region' => 'content',
+      'weight' => -20,
+    ]);
+    $this->drupalPlaceBlock('page_title_block', [
+      'region' => 'content',
+      'weight' => -50,
+    ]);
   }
 
   /**
-   * Validates the module.
+   * Tests the individual fields on the content type.
    */
   public function testHsEvents() {
-    $this->getSession()->getScreenshot();
-
-    /** @var \Drupal\Tests\WebAssert $assert_session */
     $assert_session = $this->assertSession();
-    $this->drupalGet('node/add/stanford_event');
-    $assert_session->statusCodeEquals(403);
+    $page = $this->getSession()->getPage();
 
     $account = $this->drupalCreateUser([
       'administer nodes',
       'administer content types',
       'bypass node access',
+      'access image_browser entity browser pages',
+      'access file_browser entity browser pages',
+      'access video_browser entity browser pages',
+      'access media_browser entity browser pages',
+      'dropzone upload files',
+      'access media overview',
+      'administer media',
+      'administer eck entities',
+      'bypass eck entity access',
     ]);
     $this->drupalLogin($account);
 
@@ -60,47 +82,40 @@ class HsEventsTest extends BrowserTestBase {
     $assert_session->statusCodeEquals(200);
     $assert_session->pageTextContains('Create Event');
 
-    $fields = [
-      'title[0][value]' => 'Test Event',
-      'field_s_event_date[0][value][month]' => date('n'),
-      'field_s_event_date[0][value][day]' => date('j'),
-      'field_s_event_date[0][value][year]' => date('Y'),
-      'field_s_event_date[0][value][hour]' => date('g'),
-      'field_s_event_date[0][value][minute]' => 15,
-      'field_s_event_date[0][value][ampm]' => date('a'),
-      'field_s_event_date[0][end_value][month]' => date('n'),
-      'field_s_event_date[0][end_value][day]' => date('j'),
-      'field_s_event_date[0][end_value][year]' => date('Y'),
-      'field_s_event_date[0][end_value][hour]' => date('g'),
-      'field_s_event_date[0][end_value][minute]' => 15,
-      'field_s_event_date[0][end_value][ampm]' => date('a'),
-      'body[0][summary]' => NULL,
-      'body[0][value]' => 'Body Value',
-      'field_s_event_link[0][uri]' => 'http://google.com',
-      'field_s_event_link[0][title]' => 'Google',
-      'field_s_event_type' => NULL,
-      'field_s_event_audience[0][target_id]' => 'General Public',
-      'field_s_event_location[0][value]' => 'The White House',
-      'field_s_event_map_link[0][uri]' => 'http://maps.google.com',
-      'field_s_event_map_link[0][title]' => 'Google Maps',
-      'field_s_event_category[0][target_id]' => 'Test Category',
-      'field_s_event_sponsor[0][value]' => 'Stanford University',
-      'field_s_event_contact_email[0][value]' => 'test@test.com',
-      'field_s_event_contact_phone[0][value]' => '123-456-7890',
-      'field_s_event_admission[0][value]' => 'Free',
-    ];
-    foreach ($fields as $name => $value) {
-      $assert_session->fieldExists($name);
+    $this->assertNotEmpty($assert_session->fieldExists('Show End Date'));
+    $page->fillField('Title', $this->randomString());
 
-      if (!is_null($value)) {
-        $this->getSession()->getPage()->fillField($name, $value);
-      }
+    // Get the time rounded to the nearest 1/4 hour
+    $time = round(time() / (15 * 60)) * (15 * 60);
+
+    $date_fields = [
+      'field_s_event_date[0][value][month]' => date('n', $time),
+      'field_s_event_date[0][value][day]' => date('j', $time),
+      'field_s_event_date[0][value][year]' => date('Y', $time),
+      'field_s_event_date[0][value][hour]' => date('g', $time),
+      'field_s_event_date[0][value][minute]' => (int) date('i', $time),
+      'field_s_event_date[0][value][ampm]' => date('a', $time),
+      'field_s_event_date[0][end_value][month]' => '',
+      'field_s_event_date[0][end_value][day]' => '',
+      'field_s_event_date[0][end_value][year]' => '',
+      'field_s_event_date[0][end_value][hour]' => '',
+      'field_s_event_date[0][end_value][minute]' => '',
+      'field_s_event_date[0][end_value][ampm]' => '',
+    ];
+
+    foreach ($date_fields as $field => $value) {
+      $assert_session->fieldValueEquals($field, $value);
     }
 
-    $this->getSession()->getPage()->pressButton('Save');
-
-    // Valdates the path auto works.
-    $assert_session->addressEquals('/events/test-event');
+    // Tests the year is only a 20 year span
+    $assert_session->optionNotExists('field_s_event_date[0][value][year]', date('Y') - 11);
+    $assert_session->optionNotExists('field_s_event_date[0][value][year]', date('Y') + 11);
+    $assert_session->optionExists('field_s_event_date[0][value][year]', date('Y') - 10);
+    $assert_session->optionExists('field_s_event_date[0][value][year]', date('Y') + 10);
+    $assert_session->optionNotExists('field_s_event_date[0][end_value][year]', date('Y') - 11);
+    $assert_session->optionNotExists('field_s_event_date[0][end_value][year]', date('Y') + 11);
+    $assert_session->optionExists('field_s_event_date[0][end_value][year]', date('Y') - 10);
+    $assert_session->optionExists('field_s_event_date[0][end_value][year]', date('Y') + 10);
   }
 
 }
