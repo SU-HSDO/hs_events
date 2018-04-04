@@ -1,16 +1,16 @@
-# [Stanford Module Example](https://github.com/SU-SWS/hs_events)
+# [Events](https://github.com/SU-HSDO/hs_events)
 ##### Version: 8.x-1.x
 
-Maintainers: [jbickar](https://github.com/jbickar), [sherakama](https://github.com/sherakama)  
+Maintainers: [pookmish](https://github.com/pookmish)  
 
-Changelog: [Changelog.txt](CHANGELOG.txt)
+Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 Description
 ---
 
-The Stanford Module Example module is used to do some things. Please put a
-description of what this module does so that a new developer can get a quick
-understanding about what this module does.
+The Events module is used to do create events content type.
+
+Enable the submodule `hs_events_importer` to import from events.stanford.edu.
 
 Accessibility
 ---
@@ -26,7 +26,7 @@ Install this module like any other module. [See Drupal Documentation](https://dr
 Configuration
 ---
 
-Nothing special needed.
+Change the url in the events importer to the appropriate organization id.
 
 
 Troubleshooting

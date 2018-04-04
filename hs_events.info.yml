@@ -1,10 +1,24 @@
-name: 'H&S Events'
-type: module
-description: 'Does some stuff'
+name: 'Events'
+description: 'Events content type'
 core: 8.x
-package: Stanford
-version: 8.x-1.0-dev
+type: module
+version: 8.x
+package: 'Humanities & Sciences'
 dependencies:
-  - layout_plugin
-# libraries:
-#   - /example_name
+  - allowed_formats
+  - bricks
+  - ctools
+  - datetime
+  - datetime_range
+  - eck
+  - field_group
+  - inline_entity_form
+  - link
+  - node
+  - pathauto
+  - stanford_media
+  - taxonomy
+  - telephone
+  - text
+  - user
+  - menu_ui

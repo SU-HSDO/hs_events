@@ -2,9 +2,18 @@
   "name": "su-hsdo/hs_events",
   "description": "H&S Events",
   "type": "drupal-hs-module",
-  "homepage": "https://github.com/SU-SWS/hs_events",
+  "homepage": "https://github.com/SU-HSDO/hs_events",
   "authors": [],
   "license": "GPL-2.0+",
   "minimum-stability": "dev",
-  "require": {}
+  "require": {
+    "su-sws/stanford_media": "dev-8.x-1.x",
+    "drupal/pathauto": "~1.0",
+    "drupal/migrate_plus": "~4.0",
+    "drupal/migrate_tools": "~4.0",
+    "drupal/allowed_formats": "~1.1",
+    "drupal/field_group": "~1.0@RC",
+    "drupal/ui_patterns": "~1.0@RC",
+    "drupal/ds": "~3.1"
+  }
 }
