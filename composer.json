@@ -2,7 +2,7 @@
   "name": "su-hsdo/hs_events",
   "description": "H&S Events",
   "type": "drupal-hs-module",
-  "homepage": "https://github.com/SU-SWS/hs_events",
+  "homepage": "https://github.com/SU-HSDO/hs_events",
   "authors": [],
   "license": "GPL-2.0+",
   "minimum-stability": "dev",
